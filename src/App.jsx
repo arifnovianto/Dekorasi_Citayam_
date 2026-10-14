@@ -370,9 +370,9 @@ export default function App() {
         <div className="footer-brand">
           <img src={heroImg} alt="Logo Dekorasi Citayam" className="navbar-logo" style={{ margin: '0 auto 8px', display: 'block' }} />
           <p className="footer-name">Dekorasi Citayam</p>
-          <p className="footer-tagline">Dekorasi Memukau, Kenangan Tak Terlupakan.</p>
+          <p className="footer-tagline">Dekorasi Memukau, Kenangan Tak Terlupakan, Bersama Dekorasi Citayam.</p>
         </div>
-        <p className="footer-copy">© 2024 Dekorasi Citayam. All rights reserved.</p>
+        <p className="footer-copy">© 2026 Dekorasi Citayam. All rights reserved.</p>
       </footer>
     </>
   )
