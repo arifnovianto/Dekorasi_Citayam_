@@ -1,5 +1,6 @@
 import { useState, useRef } from 'react'
-import heroImg from './img/Logo.png'
+import heroImg from './assets/Logo.png'
+
 import './App.css'
 
 // ── Data dekorasi ─────────────────────────────────────────────────────────────
