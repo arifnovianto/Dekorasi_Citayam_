@@ -1,5 +1,5 @@
 import { useState, useRef } from 'react'
-import heroImg from './assets/hero.png'
+import heroImg from './img/Logo.png'
 import './App.css'
 
 // ── Data dekorasi ─────────────────────────────────────────────────────────────
@@ -75,7 +75,7 @@ export default function App() {
       ════════════════════════════════════════ */}
       <nav className="navbar">
         <div className="navbar-brand">
-          <div className="navbar-logo">DC</div>
+          <img src={heroImg} alt="Logo Dekorasi Citayam" className="navbar-logo" />
           <span className="navbar-title">Dekorasi Citayam</span>
         </div>
 
@@ -367,7 +367,7 @@ export default function App() {
       ════════════════════════════════════════ */}
       <footer className="footer">
         <div className="footer-brand">
-          <div className="navbar-logo" style={{ margin: '0 auto 8px' }}>DC</div>
+          <img src={heroImg} alt="Logo Dekorasi Citayam" className="navbar-logo" style={{ margin: '0 auto 8px', display: 'block' }} />
           <p className="footer-name">Dekorasi Citayam</p>
           <p className="footer-tagline">Dekorasi Memukau, Kenangan Tak Terlupakan.</p>
         </div>
