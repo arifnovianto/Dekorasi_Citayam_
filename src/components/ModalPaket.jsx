@@ -1,6 +1,6 @@
 import { getPaket } from '../data/dekorasi'
 
-const FALLBACK_IMG = '/img/Jacinta.png'
+const FALLBACK_IMG = '/img/Logo.png'
 
 export default function ModalPaket({ dekorasi, onClose, onOrder }) {
   if (!dekorasi) return null

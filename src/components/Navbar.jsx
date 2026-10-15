@@ -1,5 +1,5 @@
 export default function Navbar({ menuOpen, setMenuOpen, activeSection, katalogRef }) {
-  const heroImg = '/img/Jacinta.png'
+  const logoImg = '/img/Logo.png'
 
   function handleNavClick(e, href) {
     e.preventDefault()
@@ -11,7 +11,7 @@ export default function Navbar({ menuOpen, setMenuOpen, activeSection, katalogRe
   return (
     <nav className="navbar">
       <div className="navbar-brand">
-        <img src={heroImg} alt="Logo Dekorasi Citayam" className="navbar-logo" />
+        <img src={logoImg} alt="Logo Dekorasi Citayam" className="navbar-logo" />
         <span className="navbar-title">Dekorasi Citayam</span>
       </div>
 

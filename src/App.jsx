@@ -1,168 +1,19 @@
 import { useState, useRef, useEffect } from 'react'
-<<<<<<< HEAD
-=======
-// Logo dari public/img — tidak perlu import, cukup pakai path string
-const heroImg = '/img/Jacinta.png'   // ← ganti dengan Logo.png setelah file ditambahkan ke public/img/
->>>>>>> 871467bb9ea2a558cd24a2b15b924d5b68e2e9a1
 import './App.css'
-import Navbar      from './components/Navbar'
-import ModalPaket  from './components/ModalPaket'
+import Navbar     from './components/Navbar'
+import ModalPaket from './components/ModalPaket'
 import { dekorasiList, testimonials } from './data/dekorasi'
 
-<<<<<<< HEAD
-const LOGO        = '/img/Jacinta.png'   // ganti ke '/img/Logo.png' setelah Logo.png ditaruh di public/img/
+const LOGO           = '/img/Logo.png'    // dipakai di Hero, About, Contact, Footer, Navbar
+const FALLBACK_IMG   = '/img/Jacinta.png' // fallback jika gambar dekorasi tidak ditemukan
 const ITEMS_PER_PAGE = 6
 
 export default function App() {
-  const [menuOpen,      setMenuOpen]      = useState(false)
-  const [page,          setPage]          = useState(0)
-  const [selected,      setSelected]      = useState(null)   // dekorasi aktif di katalog
-  const [paketModal,    setPaketModal]    = useState(null)   // dekorasi yang dibuka modalnya
-=======
-// ── Bonus standar semua paket ─────────────────────────────────────────────────
-const bonusStandar = [
-  'Free jasa bongkar pasang',
-  'Free ongkir daerah citayam',
-  'Free sewa ring cincin',
-  'Free sewa bouquet flowers',
-  'Free stayrofome name',
-  'Free welcome sign',
-]
-
-// ── Data paket per dekorasi ───────────────────────────────────────────────────
-const paketData = {
-  'Dekorasi Jacinta': {
-    hargaCoret: 'Rp. 800.000', harga: 'Rp. 650.000', gambar: '/img/Jacinta.png',
-    fasilitas: ['Backdrop ukuran (-/+) 3 Meter','Besi lingkaran (-/+) 2 Meter','2 Kursi Tiffany','Mix bunga','2 Standing Flowers','1 Buah lampu bunga almond','2 Buah lampu sorot','Karpet Putih'],
-    bonus: bonusStandar,
-    addOn: [{ label: 'Paket Jacinta + MUA', harga: 'Rp 1.200.000' },{ label: 'Paket Jacinta + FG', harga: 'Rp 1.300.000' },{ label: 'Paket Jacinta + MC', harga: 'Rp 1.250.000' },{ label: 'Paket Jacinta + MUA + FG + MC', harga: 'Rp 2.450.000' }],
-  },
-  'Dekorasi Hazel': {
-    hargaCoret: 'Rp. 850.000', harga: 'Rp. 700.000', gambar: '/img/Hazel.png',
-    fasilitas: ['Backdrop ukuran (-/+) 3 Meter','Besi lingkaran (-/+) 2 Meter','2 Kursi Tiffany','Mix bunga dan daun palem','2 Standing Flowers','1 Buah lampu bunga almond','2 Buah lampu sorot','Karpet Putih'],
-    bonus: bonusStandar,
-    addOn: [{ label: 'Paket Hazel + MUA', harga: 'Rp 1.250.000' },{ label: 'Paket Hazel + FG', harga: 'Rp 1.350.000' },{ label: 'Paket Hazel + MC', harga: 'Rp 1.300.000' },{ label: 'Paket Hazel + MUA + FG', harga: 'Rp 2.500.000' }],
-  },
-  'Dekorasi Ivy': {
-    hargaCoret: 'Rp. 900.000', harga: 'Rp. 750.000', gambar: '/img/Ivy.png',
-    fasilitas: ['Backdrop ukuran (-/+) 3 Meter','Besi & kain lingkaran (-/+) 2 Meter','2 Kursi Tiffany','Mix bunga','1 Buah lampu apel','2 Buah lampu sorot','Karpet Putih'],
-    bonus: bonusStandar,
-    addOn: [{ label: 'Paket Ivy + MUA', harga: 'Rp 1.300.000' },{ label: 'Paket Ivy + FG', harga: 'Rp 1.400.000' },{ label: 'Paket Ivy + MC', harga: 'Rp 1.350.000' },{ label: 'Paket Ivy + MUA + FG + MC', harga: 'Rp 2.550.000' }],
-  },
-  'Dekorasi Azalea': {
-    hargaCoret: 'Rp. 900.000', harga: 'Rp. 700.000', gambar: '/img/Azalea.png',
-    fasilitas: ['Backdrop ukuran (-/+) 3 Meter','Besi & Kain lingkaran (-/+) 2 Meter','2 Kursi Tiffany','Mix bunga dan palem','2 Standing Flowers','1 Buah lampu apel','2 Buah lampu sorot','Karpet Putih'],
-    bonus: bonusStandar,
-    addOn: [{ label: 'Paket Azalea + MUA', harga: 'Rp 1.250.000' },{ label: 'Paket Azalea + FG', harga: 'Rp 1.350.000' },{ label: 'Paket Azalea + MC', harga: 'Rp 1.300.000' },{ label: 'Paket Azalea + MUA + FG + MC', harga: 'Rp 2.500.000' }],
-  },
-  'Dekorasi Heather': {
-    hargaCoret: 'Rp. 900.000', harga: 'Rp. 750.000', gambar: '/img/Heather.png',
-    fasilitas: ['Backdrop ukuran (-/+) 3 Meter','Besi & Kain lingkaran (-/+) 2 Meter','2 Kursi Tiffany','Mix bunga dan palem','2 Standing Flowers','1 Buah lampu apel','2 Buah lampu sorot','Karpet Putih'],
-    bonus: bonusStandar,
-    addOn: [{ label: 'Paket Heather + MUA', harga: 'Rp 1.300.000' },{ label: 'Paket Heather + FG', harga: 'Rp 1.400.000' },{ label: 'Paket Heather + MC', harga: 'Rp 1.350.000' },{ label: 'Paket Heather + MUA + FG + MC', harga: 'Rp 2.550.000' }],
-  },
-  'Dekorasi Lila': {
-    hargaCoret: 'Rp. 950.000', harga: 'Rp. 750.000', gambar: '/img/Lila.png',
-    fasilitas: ['Backdrop ukuran (-/+) 3 Meter','Besi lingkaran (-/+) 2 Meter','2 Kursi Tiffany','Mix bunga dan daun palem','2 Standing Flowers','1 Buah lampu bunga almond','2 Buah lampu sorot','Karpet Putih'],
-    bonus: bonusStandar,
-    addOn: [{ label: 'Paket Lila + MUA', harga: 'Rp 1.300.000' },{ label: 'Paket Lila + FG', harga: 'Rp 1.400.000' },{ label: 'Paket Lila + MC', harga: 'Rp 1.350.000' },{ label: 'Paket Lila + MUA + FG + MC', harga: 'Rp 2.550.000' }],
-  },
-  'Dekorasi Rosella': {
-    hargaCoret: 'Rp. 950.000', harga: 'Rp. 800.000', gambar: '/img/Rosella.png',
-    fasilitas: ['Backdrop ukuran (-/+) 3 Meter','Besi & kain lingkaran (-/+) 2 Meter','2 Kursi Tiffany dan bantal','Mix bunga','2 Standing Flowers','1 Buah lampu bunga almond','2 Buah lampu sorot','Karpet Putih'],
-    bonus: bonusStandar,
-    addOn: [{ label: 'Paket Rosella + MUA', harga: 'Rp 1.350.000' },{ label: 'Paket Rosella + FG', harga: 'Rp 1.450.000' },{ label: 'Paket Rosella + MC', harga: 'Rp 1.400.000' },{ label: 'Paket Rosella + MUA + FG + MC', harga: 'Rp 2.600.000' }],
-  },
-  'Dekorasi Geranium': {
-    hargaCoret: 'Rp. 950.000', harga: 'Rp. 850.000', gambar: '/img/Geranium.png',
-    fasilitas: ['Backdrop ukuran (-/+) 3 Meter','Besi & kain lingkaran (-/+) 2 Meter','2 Kursi Tiffany dan bantal','Mix bunga','2 Standing Flowers','1 Buah lampu bunga almond','2 Buah lampu sorot','Karpet Putih'],
-    bonus: bonusStandar,
-    addOn: [{ label: 'Paket Geranium + MUA', harga: 'Rp 1.400.000' },{ label: 'Paket Geranium + FG', harga: 'Rp 1.500.000' },{ label: 'Paket Geranium + MC', harga: 'Rp 1.450.000' },{ label: 'Paket Geranium + MUA + FG + MC', harga: 'Rp 2.650.000' }],
-  },
-  'Dekorasi Alyssa': {
-    hargaCoret: 'Rp. 700.000', harga: 'Rp. 550.000', gambar: '/img/Alyssa.png',
-    fasilitas: ['Backdrop ukuran (-/+) 3 Meter','2 bantal lesehan','Mix bunga','2 Standing Flowers','2 Buah lampu sorot','Karpet Putih'],
-    bonus: bonusStandar,
-    addOn: [{ label: 'Paket Alyssa + MUA', harga: 'Rp 1.100.000' },{ label: 'Paket Alyssa + FG', harga: 'Rp 1.200.000' },{ label: 'Paket Alyssa + MC', harga: 'Rp 1.150.000' },{ label: 'Paket Alyssa + MUA + FG + MC', harga: 'Rp 2.350.000' }],
-  },
-  'Dekorasi Irish': {
-    hargaCoret: 'Rp. 1.100.000', harga: 'Rp. 900.000', gambar: '/img/Irish.png',
-    fasilitas: ['Backdrop ukuran (-/+) 3 Meter','Besi & kain lingkaran (-/+) 2 Meter','2 Kursi Tiffany dan bantal','1 Buah lampu bunga apel/almond (pilihan)','Mix bunga dan palem (pilihan)','2 Standing Flowers','Lampu LED full lingkaran','1 Set lampu gantung','2 Buah lampu sorot','Karpet Putih'],
-    bonus: bonusStandar,
-    addOn: [{ label: 'Paket Irish + MUA', harga: 'Rp 1.450.000' },{ label: 'Paket Irish + FG', harga: 'Rp 1.550.000' },{ label: 'Paket Irish + MC', harga: 'Rp 1.500.000' },{ label: 'Paket Irish + MUA + FG + MC', harga: 'Rp 2.700.000' }],
-  },
-  'Dekorasi Delphinium': {
-    hargaCoret: 'Rp. 1.100.000', harga: 'Rp. 900.000', gambar: '/img/Delphinium.png',
-    fasilitas: ['Backdrop ukuran (-/+) 3 Meter','Besi & kain lingkaran (-/+) 2 Meter','2 Kursi Tiffany dan bantal','1 Buah lampu bunga apel/almond (pilihan)','Mix bunga dan palem (pilihan)','2 Standing Flowers','Lampu LED full lingkaran','1 Set lampu gantung','2 Buah lampu sorot','Karpet Putih'],
-    bonus: bonusStandar,
-    addOn: [{ label: 'Paket Delphinium + MUA', harga: 'Rp 1.450.000' },{ label: 'Paket Delphinium + FG', harga: 'Rp 1.550.000' },{ label: 'Paket Delphinium + MC', harga: 'Rp 1.500.000' },{ label: 'Paket Delphinium + MUA + FG + MC', harga: 'Rp 2.700.000' }],
-  },
-  'Dekorasi Daisy': {
-    hargaCoret: 'Rp. 1.100.000', harga: 'Rp. 900.000', gambar: '/img/Daisy.png',
-    fasilitas: ['Backdrop ukuran (-/+) 3 Meter','Besi & kain lingkaran (-/+) 2 Meter','2 Kursi Tiffany dan bantal','1 Buah lampu bunga apel/almond (pilihan)','Mix bunga dan palem (pilihan)','2 Standing Flowers','Lampu LED full lingkaran','1 Set lampu gantung','2 Buah lampu sorot','Karpet Putih'],
-    bonus: bonusStandar,
-    addOn: [{ label: 'Paket Daisy + MUA', harga: 'Rp 1.450.000' },{ label: 'Paket Daisy + FG', harga: 'Rp 1.550.000' },{ label: 'Paket Daisy + MC', harga: 'Rp 1.500.000' },{ label: 'Paket Daisy + MUA + FG + MC', harga: 'Rp 2.700.000' }],
-  },
-  'Dekorasi Jasmine': {
-    hargaCoret: 'Rp. 1.250.000', harga: 'Rp. 1.000.000', gambar: '/img/Jasmine.png',
-    fasilitas: ['Backdrop ukuran (-/+) 3 Meter','Besi & Kain lingkaran (-/+) 2 Meter','2 Besi Oval flowers','2 Kursi Tiffany dan bantal','Mix bunga','2 Standing Flowers','1 Buah lampu bunga almond','2 Buah lampu sorot','Karpet Putih'],
-    bonus: bonusStandar,
-    addOn: [{ label: 'Paket Jasmine + MUA', harga: 'Rp 1.550.000' },{ label: 'Paket Jasmine + FG', harga: 'Rp 1.650.000' },{ label: 'Paket Jasmine + MC', harga: 'Rp 1.600.000' },{ label: 'Paket Jasmine + MUA + FG + MC', harga: 'Rp 2.800.000' }],
-  },
-  'Dekorasi HBD': {
-    hargaCoret: 'Rp. 1.000.000', harga: 'Rp. 900.000', gambar: '/img/HBD.png',
-    fasilitas: ['Dekorasi ulang tahun / khitanan tema pilihan','Balon dekorasi custom','Properti sesuai tema'],
-    bonus: bonusStandar,
-    addOn: [],
-  },
-}
-
-function getPaket(name) {
-  return paketData[name] ?? {
-    hargaCoret: null, harga: 'Hubungi Kami', gambar: null,
-    fasilitas: ['Backdrop ukuran (-/+) 3 Meter','Besi lingkaran (-/+) 2 Meter','2 Kursi Tiffany','Mix bunga','2 Standing Flowers','1 Buah lampu sorot','Karpet Putih'],
-    bonus: bonusStandar, addOn: [],
-  }
-}
-
-// ── Data dekorasi ─────────────────────────────────────────────────────────────
-const dekorasiList = [
-  // Halaman 1
-  { id: 1,  name: 'Dekorasi Jacinta',    img: '/img/Jacinta.png',    desc: 'Backdrop besi lingkaran dengan mix bunga elegan. Lengkap dengan standing flowers dan lampu bunga almond. Cocok untuk pernikahan dan akad nikah.' },
-  { id: 2,  name: 'Dekorasi Hazel',      img: '/img/Hazel.png',      desc: 'Nuansa tropis dengan mix bunga dan daun palem. Besi lingkaran dihiasi lampu gantung yang hangat untuk suasana acara yang memukau.' },
-  { id: 3,  name: 'Dekorasi Ivy',        img: '/img/Ivy.png',        desc: 'Besi & kain lingkaran dengan sentuhan mix bunga segar. Tampilan bersih dan modern cocok untuk berbagai jenis acara spesial.' },
-  { id: 4,  name: 'Dekorasi Azalea',     img: '/img/Azalea.png',     desc: 'Perpaduan besi & kain lingkaran dengan mix bunga dan palem. Elegan dan romantis untuk momen pernikahan yang tak terlupakan.' },
-  { id: 5,  name: 'Dekorasi Heather',    img: '/img/Heather.png',    desc: 'Dekorasi kain lingkaran dengan mix bunga dan palem pilihan. Tampilan natural dan mewah yang cocok untuk acara pernikahan.' },
-  { id: 6,  name: 'Dekorasi Lila',       img: '/img/Lila.png',       desc: 'Besi lingkaran dengan mix bunga dan daun palem yang cantik. Lampu bunga almond menambah keanggunan di setiap sudutnya.' },
-  // Halaman 2
-  { id: 7,  name: 'Dekorasi Rosella',    img: '/img/Rosella.png',    desc: 'Besi & kain lingkaran dengan 2 kursi Tiffany berbantal. Mix bunga merah mawar yang memukau untuk acara anniversary.' },
-  { id: 8,  name: 'Dekorasi Geranium',   img: '/img/Geranium.png',   desc: 'Nuansa biru dan putih yang memesona dengan besi & kain lingkaran. Kursi Tiffany berbantal untuk kenyamanan ekstra.' },
-  { id: 9,  name: 'Dekorasi Alyssa',     img: '/img/Alyssa.png',     desc: 'Dekorasi lesehan dengan backdrop lebar dan mix bunga indah. Cocok untuk acara yang ingin tampil beda dan elegan.' },
-  { id: 10, name: 'Dekorasi Irish',      img: '/img/Irish.png',      desc: 'Paket premium dengan LED full lingkaran & lampu gantung. Mix bunga dan palem pilihan untuk acara berkelas.' },
-  { id: 11, name: 'Dekorasi Delphinium', img: '/img/Delphinium.png', desc: 'Paket premium LED full lingkaran dengan sentuhan biru elegan. Besi & kain lingkaran untuk tampilan mewah.' },
-  { id: 12, name: 'Dekorasi Daisy',      img: '/img/Daisy.png',      desc: 'LED full lingkaran dengan mix bunga dan palem. Tampilan natural dan hangat untuk semua acara.' },
-  // Halaman 3
-  { id: 13, name: 'Dekorasi Jasmine',    img: '/img/Jasmine.png',    desc: 'Paket lengkap dengan 2 besi oval flowers. Mix bunga merah muda yang cantik dan lampu bunga almond untuk kesan romantis.' },
-  { id: 14, name: 'Dekorasi HBD',        img: '/img/HBD.png',        desc: 'Paket dekorasi ulang tahun & khitanan dengan balon custom. Berbagai pilihan tema sesuai keinginan.' },
-]
-
-// ── Data testimoni ────────────────────────────────────────────────────────────
-const testimonials = [
-  { id: 1, name: 'Sari & Budi',      event: 'Pernikahan',       rating: 5, avatar: '💍', text: 'Dekorasi Citayam benar-benar luar biasa! Pernikahan kami jadi sangat indah dan tak terlupakan. Tim mereka sangat profesional dan ramah.' },
-  { id: 2, name: 'Rina Kurniawati',  event: 'Ulang Tahun',      rating: 5, avatar: '🎂', text: 'Pesta ulang tahun anakku jadi sangat meriah berkat Dekorasi Citayam. Dekorasinya cantik, harganya terjangkau, pelayanannya memuaskan.' },
-  { id: 3, name: 'Pak Hendra',       event: 'Acara Perusahaan', rating: 5, avatar: '🏢', text: 'Kami mempercayakan dekorasi acara tahunan perusahaan kepada Dekorasi Citayam. Hasilnya melebihi ekspektasi. Profesional dan tepat waktu.' },
-  { id: 4, name: 'Dewi & Reza',      event: 'Pernikahan',       rating: 5, avatar: '💐', text: 'Mimpi kami jadi kenyataan! Dekorasi pernikahan kami begitu elegan dan romantis. Setiap detail diperhatikan dengan baik. Sangat puas!' },
-]
-
-const ITEMS_PER_PAGE = 6
-
-export default function App() {
-  const [menuOpen, setMenuOpen]         = useState(false)
-  const [page, setPage]                 = useState(0)
-  const [selected, setSelected]         = useState(null)
-  const [paketModal, setPaketModal]     = useState(null)
->>>>>>> 871467bb9ea2a558cd24a2b15b924d5b68e2e9a1
-  const [activeSection, setActiveSection] = useState('home')
+  const [menuOpen,       setMenuOpen]       = useState(false)
+  const [page,           setPage]           = useState(0)
+  const [selected,       setSelected]       = useState(null)
+  const [paketModal,     setPaketModal]     = useState(null)
+  const [activeSection,  setActiveSection]  = useState('home')
 
   const katalogRef = useRef(null)
 
@@ -172,11 +23,7 @@ export default function App() {
     page * ITEMS_PER_PAGE + ITEMS_PER_PAGE
   )
 
-<<<<<<< HEAD
-  // Lock body scroll saat modal terbuka
-=======
   // Lock scroll saat modal terbuka
->>>>>>> 871467bb9ea2a558cd24a2b15b924d5b68e2e9a1
   useEffect(() => {
     document.body.style.overflow = paketModal ? 'hidden' : ''
     return () => { document.body.style.overflow = '' }
@@ -184,18 +31,10 @@ export default function App() {
 
   // Highlight navbar sesuai section yang terlihat
   useEffect(() => {
-<<<<<<< HEAD
     const ids = ['home', 'about', 'services', 'katalog', 'testimonials', 'contact']
     const observers = ids.map(id => {
-      const el  = document.getElementById(id)
-      if (!el) return null
-=======
-    const sections = ['home', 'about', 'services', 'katalog', 'testimonials', 'contact']
-    const observers = []
-    sections.forEach(id => {
       const el = document.getElementById(id)
-      if (!el) return
->>>>>>> 871467bb9ea2a558cd24a2b15b924d5b68e2e9a1
+      if (!el) return null
       const obs = new IntersectionObserver(
         ([entry]) => { if (entry.isIntersecting) setActiveSection(id) },
         { threshold: 0.3 }
@@ -203,11 +42,7 @@ export default function App() {
       obs.observe(el)
       return obs
     })
-<<<<<<< HEAD
     return () => observers.forEach(o => o?.disconnect())
-=======
-    return () => observers.forEach(o => o.disconnect())
->>>>>>> 871467bb9ea2a558cd24a2b15b924d5b68e2e9a1
   }, [])
 
   function scrollTo(href) {
@@ -222,13 +57,7 @@ export default function App() {
 
   function handleLihatSekarang(item) {
     setSelected(item)
-<<<<<<< HEAD
     setTimeout(() => katalogRef.current?.scrollIntoView({ behavior: 'smooth' }), 30)
-=======
-    setTimeout(() => {
-      if (katalogRef.current) katalogRef.current.scrollIntoView({ behavior: 'smooth' })
-    }, 30)
->>>>>>> 871467bb9ea2a558cd24a2b15b924d5b68e2e9a1
   }
 
   function handleKembali() {
@@ -236,14 +65,9 @@ export default function App() {
     setTimeout(() => scrollTo('#services'), 30)
   }
 
-  function handleLihatPaket() {
-    setPaketModal(selected)
-  }
-
   return (
     <>
-<<<<<<< HEAD
-      {/* ── NAVBAR ───────────────────────────────────────── */}
+      {/* ── NAVBAR ── */}
       <Navbar
         menuOpen={menuOpen}
         setMenuOpen={setMenuOpen}
@@ -251,58 +75,28 @@ export default function App() {
         katalogRef={katalogRef}
       />
 
-      {/* ── HERO ─────────────────────────────────────────── */}
-=======
-      {/* ── NAVBAR ── */}
-      <nav className="navbar">
-        <div className="navbar-brand">
-          <img src={heroImg} alt="Logo Dekorasi Citayam" className="navbar-logo" />
-          <span className="navbar-title">Dekorasi Citayam</span>
-        </div>
-        <button className="navbar-toggle" onClick={() => setMenuOpen(!menuOpen)} aria-label="Toggle menu">
-          <span></span><span></span><span></span>
-        </button>
-        <ul className={`navbar-menu${menuOpen ? ' open' : ''}`}>
-          <li><a href="#home"         className={activeSection === 'home'         ? 'nav-active' : ''} onClick={e => handleNavClick(e, '#home')}>Home</a></li>
-          <li><a href="#about"        className={activeSection === 'about'        ? 'nav-active' : ''} onClick={e => handleNavClick(e, '#about')}>About</a></li>
-          <li><a href="#services"     className={activeSection === 'services'     ? 'nav-active' : ''} onClick={e => handleNavClick(e, '#services')}>Services</a></li>
-          <li><a href="#testimonials" className={activeSection === 'testimonials' ? 'nav-active' : ''} onClick={e => handleNavClick(e, '#testimonials')}>Testimonials</a></li>
-          <li>
-            <a href="#katalog" className={activeSection === 'katalog' ? 'nav-active' : ''}
-              onClick={e => { e.preventDefault(); setMenuOpen(false); if (katalogRef.current) katalogRef.current.scrollIntoView({ behavior: 'smooth' }) }}>
-              Katalog
-            </a>
-          </li>
-          <li><a href="#contact" className={activeSection === 'contact' ? 'nav-active' : ''} onClick={e => handleNavClick(e, '#contact')}>Contact us</a></li>
-        </ul>
-      </nav>
-
       {/* ── HERO ── */}
->>>>>>> 871467bb9ea2a558cd24a2b15b924d5b68e2e9a1
       <section id="home" className="hero-section">
         <div className="hero-overlay"></div>
         <div className="hero-dots"></div>
         <div className="hero-deco hero-deco-1"></div>
         <div className="hero-deco hero-deco-2"></div>
         <div className="hero-deco hero-deco-3"></div>
-<<<<<<< HEAD
 
-=======
->>>>>>> 871467bb9ea2a558cd24a2b15b924d5b68e2e9a1
         <div className="hero-content">
           <div className="hero-text">
             <h1 className="hero-title">
               Selamat Datang<br />Di <span>Dekorasi Citayam</span>
             </h1>
             <p className="hero-desc">
-              Dekorasi Memukau, Kenangan Tak Terlupakan Bersama Dekorasi Citayam.
+              Wujudkan momen istimewa dengan dekorasi kreatif dan elegan yang dirancang sesuai impian Anda. 
             </p>
-<<<<<<< HEAD
-            <a href="#services" className="hero-btn hero-btn-desktop"
-               onClick={e => handleNavClick(e, '#services')}>
-=======
-            <a href="#services" className="hero-btn hero-btn-desktop" onClick={e => handleNavClick(e, '#services')}>
->>>>>>> 871467bb9ea2a558cd24a2b15b924d5b68e2e9a1
+            {/* Tombol desktop: di dalam hero-text */}
+            <a
+              href="#services"
+              className="hero-btn hero-btn-desktop"
+              onClick={e => handleNavClick(e, '#services')}
+            >
               Selanjutnya
             </a>
           </div>
@@ -311,36 +105,29 @@ export default function App() {
             <div className="hero-logo-ring">
               <img src={LOGO} alt="Logo Dekorasi Citayam" className="hero-logo-img" />
             </div>
-            {/* Tombol — mobile: di bawah logo ring */}
-            <a href="#services" className="hero-btn hero-btn-mobile"
-               onClick={e => handleNavClick(e, '#services')}>
+            {/* Tombol mobile: di bawah logo ring */}
+            <a
+              href="#services"
+              className="hero-btn hero-btn-mobile"
+              onClick={e => handleNavClick(e, '#services')}
+            >
               Selanjutnya
             </a>
           </div>
-<<<<<<< HEAD
-        </div>
-      </section>
-
-      {/* ── ABOUT ────────────────────────────────────────── */}
-=======
-          <a href="#services" className="hero-btn hero-btn-mobile" onClick={e => handleNavClick(e, '#services')}>
-            Selanjutnya
-          </a>
         </div>
       </section>
 
       {/* ── ABOUT ── */}
->>>>>>> 871467bb9ea2a558cd24a2b15b924d5b68e2e9a1
       <section id="about" className="about-section">
         <div className="section-accent"></div>
         <div className="about-content">
 
           <div className="about-img-side">
             <div className="about-img-frame">
-              <img src={LOGO} alt="Tentang Dekorasi Citayam" className="about-img" />
+              <img src={FALLBACK_IMG} alt="Tentang Dekorasi Citayam" className="about-img" />
             </div>
             <div className="about-badge">
-              <span className="about-badge-num">5+</span>
+              <span className="about-badge-num">2+</span>
               <span className="about-badge-text">Tahun Pengalaman</span>
             </div>
           </div>
@@ -351,151 +138,134 @@ export default function App() {
               Dekorasi Citayam,<br />Keindahan di Setiap Momen
             </h2>
             <p className="about-desc">
-              Dekorasi Citayam adalah jasa dekorasi profesional yang berpusat di Citayam,
-              Depok. Kami hadir untuk mewujudkan impian Anda — dari pernikahan mewah hingga
+              Dekorasi Citayam adalah jasa dekorasi profesional yang berpusat di Ragajaya, Bojonggede, Bogor. Kami hadir untuk mewujudkan impian Anda — dari pernikahan mewah hingga
               pesta ulang tahun yang meriah, semua kami tangani dengan penuh dedikasi.
             </p>
             <p className="about-desc">
-<<<<<<< HEAD
-              Dengan pengalaman lebih dari 5 tahun dan ratusan acara sukses, tim kami
+              Dengan pengalaman lebih dari 2 tahun dan ratusan acara sukses, tim kami
               siap memberikan pelayanan terbaik dan hasil yang melampaui ekspektasi.
-=======
-              Dengan pengalaman lebih dari 5 tahun dan ratusan acara sukses, tim kami siap
-              memberikan pelayanan terbaik, harga terjangkau, dan hasil yang melampaui ekspektasi.
->>>>>>> 871467bb9ea2a558cd24a2b15b924d5b68e2e9a1
             </p>
 
             <div className="about-stats">
-<<<<<<< HEAD
               {[
                 { num: '500+', label: 'Acara Sukses' },
                 { num: '200+', label: 'Klien Puas'   },
-                { num: '15+',  label: 'Jenis Paket'  },
+                { num: '10+',  label: 'Jenis Paket'  },
               ].map(({ num, label }) => (
                 <div key={label} className="about-stat">
                   <span className="about-stat-num">{num}</span>
                   <span className="about-stat-label">{label}</span>
                 </div>
               ))}
-=======
-              <div className="about-stat"><span className="about-stat-num">500+</span><span className="about-stat-label">Acara Sukses</span></div>
-              <div className="about-stat"><span className="about-stat-num">200+</span><span className="about-stat-label">Klien Puas</span></div>
-              <div className="about-stat"><span className="about-stat-num">15+</span><span className="about-stat-label">Jenis Paket</span></div>
->>>>>>> 871467bb9ea2a558cd24a2b15b924d5b68e2e9a1
             </div>
 
-            <a href="#services" className="hero-btn"
-               onClick={e => handleNavClick(e, '#services')}>
+            <a
+              href="#services"
+              className="hero-btn"
+              onClick={e => handleNavClick(e, '#services')}
+            >
               Lihat Layanan Kami
             </a>
           </div>
         </div>
       </section>
 
-<<<<<<< HEAD
-      {/* ── SERVICES ─────────────────────────────────────── */}
-      <section id="services" className="services-section">
-        <h2 className="services-heading">Decoration List</h2>
-        <p className="services-subtitle">✦ Pilih Dekorasi Terbaik Untuk Acaramu ✦</p>
-
-=======
       {/* ── SERVICES ── */}
       <section id="services" className="services-section">
         <h2 className="services-heading">Decoration List</h2>
         <p className="services-subtitle">✦ Pilih Dekorasi Terbaik Untuk Acaramu ✦</p>
->>>>>>> 871467bb9ea2a558cd24a2b15b924d5b68e2e9a1
+
         <div className="services-carousel">
-          <button className="carousel-btn prev" onClick={() => setPage(p => Math.max(0, p - 1))} disabled={page === 0} aria-label="Previous">&#8249;</button>
+          <button
+            className="carousel-btn prev"
+            onClick={() => setPage(p => Math.max(0, p - 1))}
+            disabled={page === 0}
+            aria-label="Previous"
+          >
+            &#8249;
+          </button>
+
           <div className="services-grid">
             {visibleItems.map(item => (
               <div key={item.id} className="deko-card">
                 <div className="deko-card-img-wrap">
-<<<<<<< HEAD
                   <img
                     src={item.img}
                     alt={item.name}
                     className="deko-card-img"
-                    onError={e => { e.currentTarget.src = LOGO }}
+                    onError={e => { e.currentTarget.src = FALLBACK_IMG }}
                   />
                 </div>
                 <p className="deko-card-name">{item.name}</p>
                 <button className="deko-btn" onClick={() => handleLihatSekarang(item)}>
                   Lihat Sekarang
                 </button>
-=======
-                  <img src={item.img} alt={item.name} className="deko-card-img"
-                    onError={e => { e.currentTarget.src = heroImg }} />
-                </div>
-                <p className="deko-card-name">{item.name}</p>
-                <button className="deko-btn" onClick={() => handleLihatSekarang(item)}>Lihat Sekarang</button>
->>>>>>> 871467bb9ea2a558cd24a2b15b924d5b68e2e9a1
               </div>
             ))}
           </div>
-          <button className="carousel-btn next" onClick={() => setPage(p => Math.min(totalPages - 1, p + 1))} disabled={page === totalPages - 1} aria-label="Next">&#8250;</button>
-        </div>
-<<<<<<< HEAD
 
-=======
->>>>>>> 871467bb9ea2a558cd24a2b15b924d5b68e2e9a1
+          <button
+            className="carousel-btn next"
+            onClick={() => setPage(p => Math.min(totalPages - 1, p + 1))}
+            disabled={page === totalPages - 1}
+            aria-label="Next"
+          >
+            &#8250;
+          </button>
+        </div>
+
         <div className="carousel-dots">
           {Array.from({ length: totalPages }).map((_, i) => (
-            <button key={i} className={`carousel-dot${page === i ? ' active' : ''}`} onClick={() => setPage(i)} aria-label={`Halaman ${i + 1}`} />
+            <button
+              key={i}
+              className={`carousel-dot${page === i ? ' active' : ''}`}
+              onClick={() => setPage(i)}
+              aria-label={`Halaman ${i + 1}`}
+            />
           ))}
         </div>
       </section>
 
-<<<<<<< HEAD
-      {/* ── KATALOG ──────────────────────────────────────── */}
-      <section id="katalog" ref={katalogRef} className="detail-section">
-        <div className="detail-bg-circle"></div>
-
-=======
       {/* ── KATALOG ── */}
       <section id="katalog" ref={katalogRef} className="detail-section">
         <div className="detail-bg-circle"></div>
->>>>>>> 871467bb9ea2a558cd24a2b15b924d5b68e2e9a1
+
         {selected ? (
           <>
             <div className="detail-overlay"></div>
             <div className="detail-content">
-
               <div className="detail-text">
                 <p className="section-label" style={{ marginBottom: 8 }}>Katalog Dekorasi</p>
                 <h1 className="detail-title">{selected.name}</h1>
                 <p className="detail-desc">{selected.desc}</p>
-<<<<<<< HEAD
-                {/* Tombol — desktop: di dalam teks */}
-=======
->>>>>>> 871467bb9ea2a558cd24a2b15b924d5b68e2e9a1
                 <div className="detail-actions detail-actions-desktop">
-                  <button className="deko-btn" onClick={() => setPaketModal(selected)}>Lihat Paket</button>
-                  <button className="deko-btn deko-btn-outline" onClick={handleKembali}>Kembali</button>
+                  <button className="deko-btn" onClick={() => setPaketModal(selected)}>
+                    Lihat Paket
+                  </button>
+                  <button className="deko-btn deko-btn-outline" onClick={handleKembali}>
+                    Kembali
+                  </button>
                 </div>
               </div>
 
               <div className="detail-img-wrap">
                 <div className="detail-img-circle">
-<<<<<<< HEAD
                   <img
                     src={selected.img}
                     alt={selected.name}
                     className="detail-img"
-                    onError={e => { e.currentTarget.src = LOGO }}
+                    onError={e => { e.currentTarget.src = FALLBACK_IMG }}
                   />
                 </div>
               </div>
 
-              {/* Tombol — mobile: di bawah gambar */}
-=======
-                  <img src={selected.img} alt={selected.name} className="detail-img"
-                    onError={e => { e.currentTarget.src = heroImg }} />
-                </div>
-              </div>
->>>>>>> 871467bb9ea2a558cd24a2b15b924d5b68e2e9a1
               <div className="detail-actions detail-actions-mobile">
-                <button className="deko-btn" onClick={() => setPaketModal(selected)}>Lihat Paket</button>
-                <button className="deko-btn deko-btn-outline" onClick={handleKembali}>Kembali</button>
+                <button className="deko-btn" onClick={() => setPaketModal(selected)}>
+                  Lihat Paket
+                </button>
+                <button className="deko-btn deko-btn-outline" onClick={handleKembali}>
+                  Kembali
+                </button>
               </div>
             </div>
           </>
@@ -507,24 +277,25 @@ export default function App() {
               Klik tombol <strong>Lihat Sekarang</strong> pada salah satu dekorasi
               di atas untuk melihat detail lengkapnya di sini.
             </p>
-            <a href="#services" className="hero-btn"
-               onClick={e => handleNavClick(e, '#services')}>
+            <a
+              href="#services"
+              className="hero-btn"
+              onClick={e => handleNavClick(e, '#services')}
+            >
               Lihat Daftar Dekorasi
             </a>
           </div>
         )}
       </section>
 
-<<<<<<< HEAD
-      {/* ── TESTIMONIALS ─────────────────────────────────── */}
-=======
       {/* ── TESTIMONIALS ── */}
->>>>>>> 871467bb9ea2a558cd24a2b15b924d5b68e2e9a1
       <section id="testimonials" className="testi-section">
         <div className="testi-top-line"></div>
         <p className="section-label">Testimoni</p>
         <h2 className="section-title">Apa Kata Mereka?</h2>
-        <p className="section-sub">Ratusan pelanggan telah mempercayakan momen spesial mereka kepada kami.</p>
+        <p className="section-sub">
+          Ratusan pelanggan telah mempercayakan momen spesial mereka kepada kami.
+        </p>
         <div className="testi-grid">
           {testimonials.map(t => (
             <div key={t.id} className="testi-card">
@@ -542,52 +313,72 @@ export default function App() {
         </div>
       </section>
 
-<<<<<<< HEAD
-      {/* ── CONTACT ──────────────────────────────────────── */}
-=======
       {/* ── CONTACT ── */}
->>>>>>> 871467bb9ea2a558cd24a2b15b924d5b68e2e9a1
       <section id="contact" className="contact-section">
         <div className="contact-top-line"></div>
         <div className="contact-content">
 
           <div className="contact-info">
             <p className="section-label">Hubungi Kami</p>
-            <h2 className="section-title" style={{ color: '#fff' }}>Siap Wujudkan<br />Acara Impianmu?</h2>
-            <p className="contact-desc">Konsultasikan kebutuhanmu bersama tim kami. Kami siap membantu merancang dekorasi terbaik untuk momen spesialmu.</p>
+            <h2 className="section-title" style={{ color: '#fff' }}>
+              Siap Wujudkan<br />Acara Impianmu?
+            </h2>
+            <p className="contact-desc">
+              Konsultasikan kebutuhanmu bersama tim kami. Kami siap membantu
+              merancang dekorasi terbaik untuk momen spesialmu.
+            </p>
             <ul className="contact-list">
-<<<<<<< HEAD
-              <li><span className="contact-icon">📍</span><span>Jl. Masjid Nurul Ihsan, Kampung Baru, Citayam, Ragajaya, Bojonggede, Bogor, Jawa Barat 16920</span></li>
-              <li><span className="contact-icon">📞</span><span>+62 8953-3226-0872</span></li>
-=======
-              <li><span className="contact-icon">📍</span><span>Jl. Masjid Nurul Ihsan, Kampung Baru, Citayam, Ragajaya, Kec. Bojonggede, Kab. Bogor, Jawa Barat 16920</span></li>
-              <li><span className="contact-icon">📞</span><span>+62 895-3322-60872</span></li>
->>>>>>> 871467bb9ea2a558cd24a2b15b924d5b68e2e9a1
-              <li><span className="contact-icon">📧</span><span>dekorasi-citayam.vercel.app</span></li>
-              <li><span className="contact-icon">🕐</span><span>Senin – Minggu, 08.00 – 20.00 WIB</span></li>
+              <li>
+                <span className="contact-icon">📍</span>
+                <span>Jl. Masjid Nurul Ihsan, Kampung Baru, Citayam, Ragajaya, Bojonggede, Bogor 16920</span>
+              </li>
+              <li>
+                <span className="contact-icon">📞</span>
+                <span>+62 8953-3226-0872</span>
+              </li>
+              <li>
+                <span className="contact-icon">📧</span>
+                <span>dekorasi-citayam.vercel.app</span>
+              </li>
+              <li>
+                <span className="contact-icon">🕐</span>
+                <span>Senin – Minggu, 08.00 – 20.00 WIB</span>
+              </li>
             </ul>
             <div className="contact-socials">
-<<<<<<< HEAD
-              <a href="https://wa.me/62895332260872" className="social-btn"
-                 target="_blank" rel="noopener noreferrer" aria-label="WhatsApp">
-                📱 WhatsApp
+              <a
+                href="https://wa.me/62895332260872"
+                className="social-btn social-btn-wa"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="WhatsApp"
+              >
+                <svg viewBox="0 0 24 24" fill="currentColor" width="18" height="18" aria-hidden="true">
+                  <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347zM12 0C5.373 0 0 5.373 0 12c0 2.136.562 4.14 1.538 5.875L.057 23.428a.75.75 0 0 0 .916.916l5.553-1.481A11.945 11.945 0 0 0 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22c-1.907 0-3.686-.512-5.218-1.403l-.374-.22-3.868 1.033 1.032-3.867-.22-.374A9.956 9.956 0 0 1 2 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10z"/>
+                </svg>
+                WhatsApp
               </a>
-              <a href="https://instagram.com/dekorasicitayam" className="social-btn"
-                 target="_blank" rel="noopener noreferrer" aria-label="Instagram">
-                📷 Instagram
+              <a
+                href="https://instagram.com/dekorasicitayam"
+                className="social-btn social-btn-ig"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Instagram"
+              >
+                <svg viewBox="0 0 24 24" fill="currentColor" width="18" height="18" aria-hidden="true">
+                  <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 1 0 0 12.324 6.162 6.162 0 0 0 0-12.324zM12 16a4 4 0 1 1 0-8 4 4 0 0 1 0 8zm6.406-11.845a1.44 1.44 0 1 0 0 2.881 1.44 1.44 0 0 0 0-2.881z"/>
+                </svg>
+                Instagram
               </a>
-=======
-              <a href="https://wa.me/62895332260872" className="social-btn" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp">📱 WhatsApp</a>
-              <a href="https://instagram.com/dekorasicitayam" className="social-btn" target="_blank" rel="noopener noreferrer" aria-label="Instagram">📷 Instagram</a>
->>>>>>> 871467bb9ea2a558cd24a2b15b924d5b68e2e9a1
             </div>
           </div>
+
           <div className="contact-form-wrap">
             <div className="syarat-box">
               <h3 className="syarat-title">Syarat &amp; Ketentuan</h3>
               <ol className="syarat-list">
                 <li>Wajib follow instagram <strong>@dekorasicitayam</strong></li>
-                <li>Free ongkir khusus daerah Citayam. Diluar daerah Citayam ongkir disesuaikan</li>
+                <li>Free ongkir khusus daerah Citayam. Diluar Citayam ongkir disesuaikan</li>
                 <li>Barang yang disewakan apabila hilang/rusak ditanggung oleh customer</li>
                 <li>DP tanggal tidak bisa dikembalikan apabila acara batal, termasuk DP MUA, FG dan MC</li>
                 <li>Bersedia mengirimkan foto acaranya untuk kebutuhan marketing</li>
@@ -607,73 +398,27 @@ export default function App() {
         </div>
       </section>
 
-<<<<<<< HEAD
-      {/* ── FOOTER ───────────────────────────────────────── */}
-      <footer className="footer">
-        <div className="footer-brand">
-          <img src={LOGO} alt="Logo" className="navbar-logo"
-               style={{ margin: '0 auto 8px', display: 'block' }} />
-=======
       {/* ── FOOTER ── */}
       <footer className="footer">
         <div className="footer-brand">
-          <img src={heroImg} alt="Logo" className="navbar-logo" style={{ margin: '0 auto 8px', display: 'block' }} />
->>>>>>> 871467bb9ea2a558cd24a2b15b924d5b68e2e9a1
+          <img
+            src={LOGO}
+            alt="Logo"
+            className="navbar-logo"
+            style={{ margin: '0 auto 8px', display: 'block' }}
+          />
           <p className="footer-name">Dekorasi Citayam</p>
-          <p className="footer-tagline">Dekorasi Memukau, Kenangan Tak Terlupakan.</p>
+          <p className="footer-tagline">Dekorasi Memukau, Kenangan Tak Terlupakan, Bersama Dekorasi Citayam.</p>
         </div>
         <p className="footer-copy">© 2026 Dekorasi Citayam. All rights reserved.</p>
       </footer>
 
-<<<<<<< HEAD
-      {/* ── MODAL PAKET ──────────────────────────────────── */}
+      {/* ── MODAL PAKET ── */}
       <ModalPaket
         dekorasi={paketModal}
         onClose={() => setPaketModal(null)}
         onOrder={() => { setPaketModal(null); scrollTo('#contact') }}
       />
-=======
-      {/* ── MODAL PAKET ── */}
-      {paketModal && (() => {
-        const p = getPaket(paketModal.name)
-        const imgSrc = p.gambar ?? paketModal.img
-        return (
-          <div className="modal-backdrop" onClick={() => setPaketModal(null)}>
-            <div className="modal-box" onClick={e => e.stopPropagation()}>
-              <button className="modal-close" onClick={() => setPaketModal(null)} aria-label="Tutup">✕</button>
-              <div className="modal-header">
-                <div className="modal-title-row">
-                  <h2 className="modal-name">{paketModal.name.replace('Dekorasi ', '').toUpperCase()}</h2>
-                  {p.hargaCoret && <span className="modal-harga-coret">{p.hargaCoret}</span>}
-                </div>
-                <p className="modal-harga">{p.harga}</p>
-              </div>
-              <div className="modal-img-wrap">
-                <img src={imgSrc} alt={paketModal.name} className="modal-img"
-                  onError={e => { e.currentTarget.src = heroImg }} />
-              </div>
-              <div className="modal-features">
-                <ul className="modal-list">
-                  {p.fasilitas.map((f, i) => <li key={i}>• {f}</li>)}
-                </ul>
-                <ul className="modal-list">
-                  {p.bonus.map((b, i) => <li key={i}>• {b}</li>)}
-                </ul>
-              </div>
-              {p.addOn.length > 0 && (
-                <div className="modal-addon">
-                  {p.addOn.map((a, i) => <p key={i}>{a.label} = {a.harga}</p>)}
-                </div>
-              )}
-              <button className="deko-btn modal-order-btn"
-                onClick={() => { setPaketModal(null); scrollTo('#contact') }}>
-                Pesan Sekarang
-              </button>
-            </div>
-          </div>
-        )
-      })()}
->>>>>>> 871467bb9ea2a558cd24a2b15b924d5b68e2e9a1
     </>
   )
 }
